@@ -2,7 +2,7 @@ from playwright.sync_api import Page, expect, Playwright
 
 import time
 
-
+# Test Case : LVerify logout user
 def test_Logout_User(page: Page):
     page.goto("https://www.automationexercise.com/")
     expect(page.get_by_text("Video Tutorials")).to_be_visible()
@@ -33,4 +33,5 @@ def test_Logout_User_firefox(playwright: Playwright):
     expect(page.get_by_text("Logged in as 09w0823@Freedom")).to_be_visible()
     page.get_by_role("link", name="logout").click()
     expect(page.get_by_text("Login to your account")).to_be_visible()
+    firefoxBrowser.close()
     time.sleep(4)
