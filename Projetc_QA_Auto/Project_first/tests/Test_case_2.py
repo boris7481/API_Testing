@@ -56,6 +56,7 @@ def test_login_User_with_correct_email_and_password(page: Page):
     time.sleep(10)
 
 
+# firefox
 def test_login_User_with_correct_email_and_password_firefox(playwright: Playwright):
     firefoxBrowser = playwright.firefox.launch(headless=False)
     page = firefoxBrowser.new_page()
@@ -70,4 +71,5 @@ def test_login_User_with_correct_email_and_password_firefox(playwright: Playwrig
     expect(page.get_by_text("Logged in as 09w0823@Freedom")).to_be_visible()
     page.get_by_role("link", name=" Delete Account").click()
     expect(page.get_by_text("ACCOUNT DELETED!")).to_be_visible()
+    firefoxBrowser.close()
     time.sleep(10)
