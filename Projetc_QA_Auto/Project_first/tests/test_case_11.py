@@ -2,6 +2,7 @@ from playwright.sync_api import Page, expect, Playwright
 
 import time
 
+
 # Test Case 11: Verify Subscription in Cart page
 # ---#termes = ID ,   .terms = class
 # Test Case 6: Contact Us Form
