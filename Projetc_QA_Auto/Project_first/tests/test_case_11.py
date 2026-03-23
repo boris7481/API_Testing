@@ -32,3 +32,4 @@ def test__Verify_Subscription_in_Cart_page_firefox(playwright: Playwright):
     page.locator("#subscribe").click()
     expect(page.get_by_text("You have been successfully subscribed")).to_be_visible()
     time.sleep(4)
+    firefoxBrowser.close()
