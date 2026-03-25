@@ -38,7 +38,7 @@ def test_Remove_Products_From_Cart(page: Page):
     # Vérifier disparition
     page.wait_for_selector(f"text={item_text}", state="detached")  # verification here
 
-
+# ---#termes = ID ,   .terms = class      09w0823@Freedom
 # firefox
 def test_Remove_Products_From_Cart_firefox(playwright: Playwright):
     firefoxBrowser = playwright.firefox.launch(headless=False)
