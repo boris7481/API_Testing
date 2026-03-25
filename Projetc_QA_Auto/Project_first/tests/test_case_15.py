@@ -1,5 +1,4 @@
 # Test Case 14: Place Order: Register while Checkout
-
 from playwright.sync_api import Page, expect, Playwright
 
 import time
@@ -11,17 +10,10 @@ email = faker.email()
 
 # ---#termes = ID ,   .terms = class
 # Test Case 6: Contact Us Form
-def test_Place_Order_Register_while_Checkout(page: Page):
+def test_Place_Order_Register_before_Checkout(page: Page):
     page.goto("https://www.automationexercise.com/")
     expect(page.get_by_text("Video Tutorials")).to_be_visible()
     page.get_by_role("button", name="Einwilligen").click()
-    page.get_by_role("link", name=" Products").click()
-    page.get_by_role("link", name="View Product").first.click()
-    expect(page.get_by_text("Category: Women > Tops")).to_be_visible()
-    page.get_by_role("button", name="Add to cart").click()
-    page.get_by_role("link", name="View Cart").click()
-    page.get_by_text("Proceed To Checkout").click()
-    page.get_by_role("link", name="Register / Login").click()
     page.get_by_role("link", name="Signup / Login").click()
     page.get_by_text("New User Signup!").is_visible()
     page.locator('[data-qa="signup-name"]').fill("09w0823@Freedom")
@@ -49,6 +41,18 @@ def test_Place_Order_Register_while_Checkout(page: Page):
     expect(page.get_by_text("ACCOUNT CREATED!")).to_be_visible()
     page.locator("[data-qa='continue-button']").click()
     expect(page.get_by_text("Logged in as 09w0823@Freedom")).to_be_visible()
+    page.get_by_role("link", name=" Products").click()
+    blue_top = page.locator(".product-image-wrapper").filter(has_text="Blue Top").first
+    blue_top.hover()
+    blue_top.locator(".add-to-cart").first.click()
+    page.get_by_role("button", name="Continue Shopping").click()
+    blue_top = page.locator(".product-image-wrapper").filter(has_text="Men Tshirt").first
+    blue_top.hover()
+    blue_top.locator(".add-to-cart").first.click()
+    page.get_by_role("button", name="Continue Shopping").click()
+    page.get_by_role("link", name="Cart").click()
+    expect(page.get_by_text("Blue Top")).to_be_visible()
+    expect(page.get_by_text("Men Tshirt")).to_be_visible()
     page.get_by_role("link", name="Cart").click()
     page.get_by_text("Proceed To Checkout").click()
     expect(page.get_by_text("Address Details")).to_be_visible()
@@ -67,20 +71,12 @@ def test_Place_Order_Register_while_Checkout(page: Page):
 
 
 # firefox
-
-def test_Place_Order_Register_while_Checkout_firefox(playwright: Playwright):
+def test_Place_Order_Register_before_Checkout_firefox(playwright: Playwright):
     firefoxBrowser = playwright.firefox.launch(headless=False)
     page = firefoxBrowser.new_page()
     page.goto("https://www.automationexercise.com/")
     expect(page.get_by_text("Video Tutorials")).to_be_visible()
     page.get_by_role("button", name="consent").click()
-    page.get_by_role("link", name=" Products").click()
-    page.get_by_role("link", name="View Product").first.click()
-    expect(page.get_by_text("Category: Women > Tops")).to_be_visible()
-    page.get_by_role("button", name="Add to cart").click()
-    page.get_by_role("link", name="View Cart").click()
-    page.get_by_text("Proceed To Checkout").click()
-    page.get_by_role("link", name="Register / Login").click()
     page.get_by_role("link", name="Signup / Login").click()
     page.get_by_text("New User Signup!").is_visible()
     page.locator('[data-qa="signup-name"]').fill("09w0823@Freedom")
@@ -108,6 +104,18 @@ def test_Place_Order_Register_while_Checkout_firefox(playwright: Playwright):
     expect(page.get_by_text("ACCOUNT CREATED!")).to_be_visible()
     page.locator("[data-qa='continue-button']").click()
     expect(page.get_by_text("Logged in as 09w0823@Freedom")).to_be_visible()
+    page.get_by_role("link", name=" Products").click()
+    blue_top = page.locator(".product-image-wrapper").filter(has_text="Blue Top").first
+    blue_top.hover()
+    blue_top.locator(".add-to-cart").first.click()
+    page.get_by_role("button", name="Continue Shopping").click()
+    blue_top = page.locator(".product-image-wrapper").filter(has_text="Men Tshirt").first
+    blue_top.hover()
+    blue_top.locator(".add-to-cart").first.click()
+    page.get_by_role("button", name="Continue Shopping").click()
+    page.get_by_role("link", name="Cart").click()
+    expect(page.get_by_text("Blue Top")).to_be_visible()
+    expect(page.get_by_text("Men Tshirt")).to_be_visible()
     page.get_by_role("link", name="Cart").click()
     page.get_by_text("Proceed To Checkout").click()
     expect(page.get_by_text("Address Details")).to_be_visible()

@@ -10,7 +10,6 @@ def test_Add_Products_in_Cart(page: Page):
     expect(page.get_by_text("Video Tutorials")).to_be_visible()
     page.get_by_role("button", name="Einwilligen").click()
     page.get_by_role("link", name=" Products").click()
-#    page.locator(".features_items").first.click()
     blue_top = page.locator(".product-image-wrapper").filter(has_text="Blue Top").first
     blue_top.hover()
     blue_top.locator(".add-to-cart").first.click()
@@ -19,7 +18,6 @@ def test_Add_Products_in_Cart(page: Page):
     blue_top.hover()
     blue_top.locator(".add-to-cart").first.click()
     page.get_by_role("button", name="Continue Shopping").click()
-#    page.get_by_text( "text = View Cart").click()
     page.get_by_role("link", name="Cart").click()
     expect (page.get_by_text("Blue Top")).to_be_visible()
     expect(page.get_by_text("Men Tshirt")).to_be_visible()
