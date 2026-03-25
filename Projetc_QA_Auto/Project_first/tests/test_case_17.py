@@ -40,7 +40,6 @@ def test_Remove_Products_From_Cart(page: Page):
 
 
 # firefox
-
 def test_Remove_Products_From_Cart_firefox(playwright: Playwright):
     firefoxBrowser = playwright.firefox.launch(headless=False)
     page = firefoxBrowser.new_page()
