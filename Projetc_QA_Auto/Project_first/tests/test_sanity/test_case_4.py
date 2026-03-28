@@ -2,6 +2,7 @@ from playwright.sync_api import Page, expect, Playwright
 
 import time
 
+
 # ---#termes = ID ,   .terms = class
 # Test Case : LVerify logout user
 def test_Logout_User(page: Page):

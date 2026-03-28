@@ -26,7 +26,7 @@ def test_Search_Products_and_Verify_Cart_After_Login(page: Page):
     page.locator('[data-qa="login-button"]').click()
     page.get_by_role("link", name="Cart").click()
     expect(page.get_by_text("Premium Polo T-Shirts")).to_be_visible()
-    time.sleep(4)
+    time.sleep(2)
 
 
 # firefox
@@ -53,4 +53,4 @@ def test_Search_Products_and_Verify_Cart_After_Login_firefox(playwright: Playwri
     page.locator('[data-qa="login-button"]').click()
     page.get_by_role("link", name="Cart").click()
     expect(page.get_by_text("Premium Polo T-Shirts")).to_be_visible()
-    time.sleep(4)
+    time.sleep(2)

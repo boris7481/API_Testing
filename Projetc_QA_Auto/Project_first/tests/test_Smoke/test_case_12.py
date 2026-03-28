@@ -30,7 +30,7 @@ def test_Add_Products_in_Cart(page: Page):
 #   blue_top.locator(".add-to-cart").first.click()
 
 # Firefox
-def test_Add_Products_in_Cart(playwright: Playwright):
+def test_Add_Products_in_Cart_firefox(playwright: Playwright):
     firefoxBrowser = playwright.firefox.launch(headless=False)
     page = firefoxBrowser.new_page()
     page.goto("https://www.automationexercise.com/")

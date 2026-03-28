@@ -1,16 +1,19 @@
+# Test Case 23: Verify address details in checkout page
+
+# Test Case 14: Place Order: Register while Checkout
+from playwright.sync_api import Page, expect, Playwright
+
 import time
 from faker import Faker
 
 faker = Faker()
+email = faker.email()
 
-from playwright.sync_api import Page, expect, Playwright
 
-
-# ---#termes = ID ,   .terms = class
-def test_Cases_1_Register_User(page: Page):
-    email = faker.email()
-    page.goto("https://www.automationexercise.com/signup")
-    page.get_by_text("AutomationExercise").is_visible()
+# ---#termes = ID ,   .terms = class      09w0823@Freedom
+def test_Verify_address_details_in_checkout_page(page: Page):
+    page.goto("https://www.automationexercise.com/")
+    expect(page.get_by_text("Video Tutorials")).to_be_visible()
     page.get_by_role("button", name="Einwilligen").click()
     page.get_by_role("link", name="Signup / Login").click()
     page.get_by_text("New User Signup!").is_visible()
@@ -39,19 +42,31 @@ def test_Cases_1_Register_User(page: Page):
     expect(page.get_by_text("ACCOUNT CREATED!")).to_be_visible()
     page.locator("[data-qa='continue-button']").click()
     expect(page.get_by_text("Logged in as 09w0823@Freedom")).to_be_visible()
-    page.get_by_role("link", name=" Delete Account").click()
-    expect(page.get_by_text("ACCOUNT DELETED!")).to_be_visible()
-    time.sleep(10)  # this is only to see the step better
+    page.get_by_role("link", name=" Products").click()
+    blue_top = page.locator(".product-image-wrapper").filter(has_text="Blue Top").first
+    blue_top.hover()
+    blue_top.locator(".add-to-cart").first.click()
+    page.get_by_role("button", name="Continue Shopping").click()
+    blue_top = page.locator(".product-image-wrapper").filter(has_text="Men Tshirt").first
+    blue_top.hover()
+    blue_top.locator(".add-to-cart").first.click()
+    page.get_by_role("button", name="Continue Shopping").click()
+    page.get_by_role("link", name="Cart").click()
+    expect(page.get_by_text("Blue Top")).to_be_visible()
+    expect(page.get_by_text("Men Tshirt")).to_be_visible()
+    page.get_by_role("link", name="Cart").click()
+    page.get_by_text("Proceed To Checkout").click()
+    expect(page.get_by_text("Address Details")).to_be_visible()
+    expect(page.locator(".address_delivery = .address_invoice"))
 
 
 # firefox
-def test_Cases_1_Register_User_firefox(playwright: Playwright):
+def test_Verify_address_details_in_checkout_page_forefox(playwright: Playwright):
     firefoxBrowser = playwright.firefox.launch(headless=False)
     page = firefoxBrowser.new_page()
-    email = faker.email()
-    page.goto("https://www.automationexercise.com/signup")
-    page.get_by_text("AutomationExercise").is_visible()
-    page.get_by_role("button", name="consent").click()  # the only different is here
+    page.goto("https://www.automationexercise.com/")
+    expect(page.get_by_text("Video Tutorials")).to_be_visible()
+    page.get_by_role("button", name="consent").click()
     page.get_by_role("link", name="Signup / Login").click()
     page.get_by_text("New User Signup!").is_visible()
     page.locator('[data-qa="signup-name"]').fill("09w0823@Freedom")
@@ -79,7 +94,20 @@ def test_Cases_1_Register_User_firefox(playwright: Playwright):
     expect(page.get_by_text("ACCOUNT CREATED!")).to_be_visible()
     page.locator("[data-qa='continue-button']").click()
     expect(page.get_by_text("Logged in as 09w0823@Freedom")).to_be_visible()
-    page.get_by_role("link", name=" Delete Account").click()
-    expect(page.get_by_text("ACCOUNT DELETED!")).to_be_visible()
+    page.get_by_role("link", name=" Products").click()
+    blue_top = page.locator(".product-image-wrapper").filter(has_text="Blue Top").first
+    blue_top.hover()
+    blue_top.locator(".add-to-cart").first.click()
+    page.get_by_role("button", name="Continue Shopping").click()
+    blue_top = page.locator(".product-image-wrapper").filter(has_text="Men Tshirt").first
+    blue_top.hover()
+    blue_top.locator(".add-to-cart").first.click()
+    page.get_by_role("button", name="Continue Shopping").click()
+    page.get_by_role("link", name="Cart").click()
+    expect(page.get_by_text("Blue Top")).to_be_visible()
+    expect(page.get_by_text("Men Tshirt")).to_be_visible()
+    page.get_by_role("link", name="Cart").click()
+    page.get_by_text("Proceed To Checkout").click()
+    expect(page.get_by_text("Address Details")).to_be_visible()
+    expect(page.locator(".address_delivery = .address_invoice"))
     firefoxBrowser.close()
-    time.sleep(10)  # this is only to see the step better

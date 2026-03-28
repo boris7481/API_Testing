@@ -1,26 +1,34 @@
-# Test Case 14: Place Order: Register while Checkout
+# Test Case 24: Download Invoice after purchase order
 
 from playwright.sync_api import Page, expect, Playwright
-
+import os
 import time
 from faker import Faker
 
 faker = Faker()
 email = faker.email()
 
-
-# ---#termes = ID ,   .terms = class
-# Test Case 6: Contact Us Form
-def test_Place_Order_Register_while_Checkout(page: Page):
+# ---#termes = ID ,   .terms = class      09w0823@Freedom
+def test_Download_Invoice_after_purchase_order(page: Page):
     page.goto("https://www.automationexercise.com/")
     expect(page.get_by_text("Video Tutorials")).to_be_visible()
     page.get_by_role("button", name="Einwilligen").click()
     page.get_by_role("link", name=" Products").click()
-    page.get_by_role("link", name="View Product").first.click()
-    expect(page.get_by_text("Category: Women > Tops")).to_be_visible()
-    page.get_by_role("button", name="Add to cart").click()
-    page.get_by_role("link", name="View Cart").click()
+    blue_top = page.locator(".product-image-wrapper").filter(has_text="Blue Top").first
+    blue_top.hover()
+    blue_top.locator(".add-to-cart").first.click()
+    page.get_by_role("button", name="Continue Shopping").click()
+    blue_top = page.locator(".product-image-wrapper").filter(has_text="Men Tshirt").first
+    blue_top.hover()
+    blue_top.locator(".add-to-cart").first.click()
+    page.get_by_role("button", name="Continue Shopping").click()
+    page.get_by_role("link", name="Cart").click()
+    expect(page.get_by_text("Blue Top")).to_be_visible()
+    expect(page.get_by_text("Men Tshirt")).to_be_visible()
+#    page.get_by_role("link", name="Cart").click()
     page.get_by_text("Proceed To Checkout").click()
+#
+
     page.get_by_role("link", name="Register / Login").click()
     page.get_by_role("link", name="Signup / Login").click()
     page.get_by_text("New User Signup!").is_visible()
@@ -52,6 +60,8 @@ def test_Place_Order_Register_while_Checkout(page: Page):
     page.get_by_role("link", name="Cart").click()
     page.get_by_text("Proceed To Checkout").click()
     expect(page.get_by_text("Address Details")).to_be_visible()
+    expect(page.locator(".address_delivery = .address_invoice"))
+
     expect(page.get_by_text("Review Your Order")).to_be_visible()
     page.locator(".form-control").fill("everything is op")
     page.get_by_role("link", name="Place Order").click()
@@ -62,24 +72,47 @@ def test_Place_Order_Register_while_Checkout(page: Page):
     page.locator("[data-qa='expiry-year']").fill("2030")
     page.locator("[data-qa='pay-button']").click()
     expect(page.get_by_text("Congratulations! Your order has been confirmed!")).to_be_visible()
+
+    with page.expect_download() as download_info:
+        page.get_by_role("link", name="Download Invoice").click()
+
+    download = download_info.value
+
+    # Sauvegarde
+    file_path = f"./downloads/{download.suggested_filename}"
+    download.save_as(file_path)
+
+    # Vérifications
+    assert os.path.exists(file_path)
+    assert os.path.getsize(file_path) > 0  # --> to check the size
+    assert "invoice" in download.suggested_filename.lower()
+
     page.locator("[data-qa='continue-button']").click()
-    time.sleep(4)
 
 
 # firefox
 
-def test_Place_Order_Register_while_Checkout_firefox(playwright: Playwright):
+def test_Download_Invoice_after_purchase_order_firefox(playwright: Playwright):
     firefoxBrowser = playwright.firefox.launch(headless=False)
     page = firefoxBrowser.new_page()
     page.goto("https://www.automationexercise.com/")
     expect(page.get_by_text("Video Tutorials")).to_be_visible()
     page.get_by_role("button", name="consent").click()
     page.get_by_role("link", name=" Products").click()
-    page.get_by_role("link", name="View Product").first.click()
-    expect(page.get_by_text("Category: Women > Tops")).to_be_visible()
-    page.get_by_role("button", name="Add to cart").click()
-    page.get_by_role("link", name="View Cart").click()
+    blue_top = page.locator(".product-image-wrapper").filter(has_text="Blue Top").first
+    blue_top.hover()
+    blue_top.locator(".add-to-cart").first.click()
+    page.get_by_role("button", name="Continue Shopping").click()
+    blue_top = page.locator(".product-image-wrapper").filter(has_text="Men Tshirt").first
+    blue_top.hover()
+    blue_top.locator(".add-to-cart").first.click()
+    page.get_by_role("button", name="Continue Shopping").click()
+    page.get_by_role("link", name="Cart").click()
+    expect(page.get_by_text("Blue Top")).to_be_visible()
+    expect(page.get_by_text("Men Tshirt")).to_be_visible()
+#    page.get_by_role("link", name="Cart").click()
     page.get_by_text("Proceed To Checkout").click()
+
     page.get_by_role("link", name="Register / Login").click()
     page.get_by_role("link", name="Signup / Login").click()
     page.get_by_text("New User Signup!").is_visible()
@@ -111,6 +144,8 @@ def test_Place_Order_Register_while_Checkout_firefox(playwright: Playwright):
     page.get_by_role("link", name="Cart").click()
     page.get_by_text("Proceed To Checkout").click()
     expect(page.get_by_text("Address Details")).to_be_visible()
+    expect(page.locator(".address_delivery = .address_invoice"))
+
     expect(page.get_by_text("Review Your Order")).to_be_visible()
     page.locator(".form-control").fill("everything is op")
     page.get_by_role("link", name="Place Order").click()
@@ -121,6 +156,20 @@ def test_Place_Order_Register_while_Checkout_firefox(playwright: Playwright):
     page.locator("[data-qa='expiry-year']").fill("2030")
     page.locator("[data-qa='pay-button']").click()
     expect(page.get_by_text("Congratulations! Your order has been confirmed!")).to_be_visible()
+
+    with page.expect_download() as download_info:
+        page.get_by_role("link", name="Download Invoice").click()
+
+    download = download_info.value
+
+    # Sauvegarde
+    file_path = f"./downloads/{download.suggested_filename}"
+    download.save_as(file_path)
+
+    # Vérifications
+    assert os.path.exists(file_path)
+    assert os.path.getsize(file_path) > 0  # --> to check the size
+    assert "invoice" in download.suggested_filename.lower()
+
     page.locator("[data-qa='continue-button']").click()
-    time.sleep(4)
-    firefoxBrowser.close()
+

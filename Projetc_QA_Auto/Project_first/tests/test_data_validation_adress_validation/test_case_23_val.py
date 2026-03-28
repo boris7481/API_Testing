@@ -9,6 +9,7 @@ from faker import Faker
 faker = Faker()
 email = faker.email()
 
+
 # ---#termes = ID ,   .terms = class      09w0823@Freedom
 def test_Verify_address_details_in_checkout_page(page: Page):
     page.goto("https://www.automationexercise.com/")

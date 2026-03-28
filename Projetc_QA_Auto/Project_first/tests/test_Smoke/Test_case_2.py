@@ -6,6 +6,7 @@ faker = Faker()
 
 from playwright.sync_api import Page, expect, Playwright
 
+
 # ---#termes = ID ,   .terms = class
 # this function allow you to recreate the account who was deleted by the foction below
 def test_Cases_1_Register_User(page: Page):
